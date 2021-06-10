@@ -1,0 +1,90 @@
+Abstract
+Background
+For service companies, it is essential to deliver good customer service to stay competitive out 
+in the market. Customer needs are changing over time and there are different needs for 
+different customer groups. Companies of today are in constant need of figuring out new ways 
+to keep their customers loyal and at the same time keep up with their competitors. 
+Because of different needs and different type of customers it is important for companies to be 
+aware of their different customer groups. A customer segmentation can be done to 
+differentiate customers from each other. By making a customer segmentation, customers can 
+be divided into different groups based on different characteristics and they can be 
+distinguished from each other. This enable companies to easier meet the customer needs and 
+use different marketing strategies for different customers. Where this study focuses on the 
+issue of customer segmentation in services.
+
+Problem description
+Customers are of different character and have different needs. Therefore, it is not optimal to 
+have same strategy and marketing for every customer. For a company, it is important to 
+segment their customers and identify the differences between the customer segments to easier 
+meet the customer needs and take care of those customers who are of high importance for the 
+company
+
+Benefits of Customer Segmentation
+At the expansion stage, executing a marketing strategy without any 
+knowledge of how your target market is segmented is akin to firing shots at a 
+target 100 feet away — while blindfolded. The likelihood of hitting the target is 
+a matter of luck more than anything else.
+Without a deep understanding of how a company’s best current customers 
+are segmented, a business often lacks the market focus needed to allocate 
+and spend its precious human and capital resources efficiently. Furthermore, 
+a lack of best current customer segment focus can cause diffused go-tomarket and product development strategies that hamper a company’s ability 
+to fully engage with its target segments. Together, all of those factors can 
+ultimately impede a company’s growth.
+
+If best current customer segmentation is done right, however, the business 
+benefits are numerous. For example, a best current customer segmentation 
+exercise can tangibly impact your operating results by:
+1. Improving your whole product: Having a clear idea of who wants to buy 
+your product and what they need it for will help you differentiate your 
+company as the best solution for their individual needs. The result will be 
+increased satisfaction and better performance against competitors. The 
+benefits also extend beyond your core product offering, since any insights 
+into your best customers will allow your organization to offer better 
+customer support, professional services, and any other offerings that 
+make up their whole product experience.
+2. Focusing your marketing message: In parallel with improvements to the 
+product, conducting a customer segmentation project can help you 
+develop more focused marketing messages that are customized to each of 
+your best segments, resulting in higher quality inbound interest in your 
+product.
+3. Allowing your sales organization to pursue higher percentage
+opportunities: By spending less time on less lucrative opportunities and 
+more on your most successful segments, your sales team will be able to 
+increase its win rate, cover more ground, and ultimately increase 
+revenues.
+4. Getting higher quality revenues: Not all revenue dollars are created 
+equal. Sales into the wrong segment can be more expensive to sell and 
+maintain, and may have a higher churn rate or lower upsell potential after 
+the initial purchase has been made. Staying away from these types of 
+customers and focusing on better ones will increase your margins and 
+promote the stability of your customer base.
+
+How K-Means Algorithm Works
+The k-means clustering algorithm works by finding like groups based on 
+Euclidean distance, a measure of distance or similarity. The practitioner 
+selects kk groups to cluster, and the algorithm finds the best centroids for 
+the kk groups. The practitioner can then use those groups to determine which 
+factors group members relate. For customers, these would be their buying 
+preferences.K-Means clustering intends to partition n objects into k clusters in which each 
+object belongs to the cluster with the nearest mean. This method produces 
+exactly k different clusters of greatest possible distinction. The best number of 
+clusters k leading to the greatest separation (distance) is not known as a priori 
+and must be computed from the data. The objective of K-Means clustering is 
+to minimize total intra-cluster variance, or, the squared error function: 
+
+Algorithm
+1. Clusters the data into k groups where k is predefined.
+2. Select k points at random as cluster centres.
+3. Assign objects to their closest cluster centre according to the Euclidean 
+distance function.
+4. Calculate the centroid or mean of all objects in each cluster.
+5. Repeat steps 2, 3 and 4 until the same points are assigned to each 
+cluster in consecutive rounds.
+
+K-Means is relatively an efficient method. However, we need to specify the 
+number of clusters, in advance and the final results are sensitive to 
+initialization and often terminates at a local optimum. Unfortunately there is no 
+global theoretical method to find the optimal number of clusters. A practical 
+approach is to compare the outcomes of multiple runs with different k and 
+choose the best one based on a predefined criterion. In general, a large k 
+probably decreases the error but increases the risk of over fitting.
