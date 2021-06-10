@@ -1,0 +1,495 @@
+# In[41]:
+
+
+import pandas as pd # working with data
+import numpy as np # working with arrays
+import matplotlib.pyplot as plt # visualization
+import seaborn as sns # visualization
+
+get_ipython().run_line_magic('matplotlib', 'inline')
+sns.set_style()
+plt.style.use('fivethirtyeight')
+
+
+# In[42]:
+
+
+customer=pd.read_csv('./Desktop/customer data.csv')
+customer.head()
+
+
+# In[43]:
+
+
+customer.rename(columns={"Income":"Annual Income", "Spending Score(1-100)" : "Spending Score" },inplace=True)
+customer.head()
+
+
+# In[44]:
+
+
+# Plot Age,Income,and Spending Score Correlation
+sns.pairplot(customer[['Age', 'Annual Income' , 'Spending Score']])
+fig=plt.gcf()
+fig.set_size_inches(15,10)
+
+
+# In[45]:
+
+
+labels=['Female','Male']
+size= customer['Gender'].value_counts()
+colors=['Green','Orange']
+explode=[0,0.1]
+
+plt.rcParams['figure.figsize']=(10,10)
+plt.pie(size,colors=colors, explode=explode, labels=labels, shadow=True , autopct='%.2f%%')
+plt.title("Gender", fontsize=20)
+plt.axis("off")
+plt.legend()
+plt.show()
+
+
+# In[46]:
+
+
+sns.pairplot(customer,vars=['Age','Annual Income','Spending Score'], hue="Gender")
+
+fig=plt.gcf()
+fig.set_size_inches(15,10)
+
+
+# In[68]:
+
+
+plt.figure(figsize=(15,10))
+ax=sns.countplot(x="Age", hue="Gender",data=customer)
+
+
+# In[69]:
+
+
+plt.figure(figsize=(15,10))
+ax=sns.countplot(x="Annual Income", hue="Gender",data=customer)
+
+
+# In[70]:
+
+
+plt.figure(figsize=(15,20))
+ax=sns.countplot(x="Spending Score", hue="Gender",data=customer)
+
+
+# In[71]:
+
+
+#Spending Score Vs Income
+
+customer_short=customer[['Spending Score','Annual Income']]
+
+
+# In[72]:
+
+
+customer_short.describe()
+
+
+# In[53]:
+
+
+import sklearn.cluster as cluster
+
+
+# In[73]:
+
+
+K=range(1,12)
+wss=[]
+for k in K:
+    kmeans=cluster.KMeans(n_clusters=k,init="k-means++")
+    kmeans=kmeans.fit(customer_short)
+    wss_iter=kmeans.inertia_
+    wss.append(wss_iter)
+
+
+# In[74]:
+
+
+centers=pd.DataFrame({'Clusters':K,'WSS':wss})
+centers
+
+
+# In[75]:
+
+
+sns.lineplot(x='Clusters',y='WSS',data=centers,marker="+")
+plt.title("Spending Score and Annual Income")
+
+fig=plt.gcf()
+fig.set_size_inches(15,5)
+
+
+# In[76]:
+
+
+#Modal for spending score and income
+kmeans=cluster.KMeans(n_clusters=5,init="k-means++")
+kmeans=kmeans.fit(customer[["Spending Score","Annual Income"]])
+
+
+# In[77]:
+
+
+kmeans.cluster_centers_
+
+
+# In[78]:
+
+
+customer.head()
+
+
+# In[79]:
+
+
+customer['Clusters']=kmeans.labels_
+
+
+# In[80]:
+
+
+customer.head()
+
+
+# In[81]:
+
+
+customer['Clusters'].value_counts()
+
+
+# In[82]:
+
+
+customer.to_csv('customer.csv',index=False)
+
+
+# In[126]:
+
+
+sns.pairplot(customer,vars=['Age','Annual Income','Spending Score'], hue="Clusters",height=4)
+
+
+# In[129]:
+
+
+y=customer.iloc[:,[2,4]].values
+y.shape
+
+
+# In[93]:
+
+
+from sklearn.cluster import KMeans
+
+wss=[]
+for i in range(1,11):
+    kmeans= KMeans(n_clusters=i,init='k-means++',max_iter=300, n_init=10, random_state=0)
+    kmeans.fit(y)
+    wss.append(kmeans.inertia_)
+
+
+# In[130]:
+
+
+kmeans= KMeans(n_clusters=i,init='k-means++',max_iter=300, n_init=10, random_state=0)
+ymeans=kmeans.fit_predict(y)
+
+plt.rcParams['figure.figsize']=(15,10)
+plt.title('Cluster of Annual Income',fontsize=20)
+
+plt.scatter(y[ymeans == 0,0], y[ymeans== 0,1],s=100, c="yellow", label= 'Priority Customers')    
+plt.scatter(y[ymeans == 1,0], y[ymeans== 1,1],s=100, c="green",  label= 'Target Customers(High Income)')    
+plt.scatter(y[ymeans == 2,0], y[ymeans== 2,1],s=100, c="blue",   label= 'Usual Customers')    
+plt.scatter(y[ymeans == 3,0], y[ymeans== 3,1],s=100, c="orange", label= 'Target Customers(Low Income)')    
+plt.scatter(y[ymeans == 4,0], y[ymeans== 4,1],s=100, c="red"  ,  label= 'Moderate Targeted Customers')
+plt.scatter(kmeans.cluster_centers_[:,0],kmeans.cluster_centers_[:,1], s=50, c='black') 
+
+plt.style.use('fivethirtyeight')
+plt.xlabel("Annual Income")
+plt.ylabel("Spending Score(1-100)")
+plt.legend()
+plt.grid()
+plt.show()
+
+
+# In[96]:
+
+
+customer_range= customer[['Spending Score','Age']]
+
+
+# In[97]:
+
+
+customer_range.describe()
+
+
+# In[99]:
+
+
+K=range(1,12)
+wss=[]
+for k in K:
+    kmeans=cluster.KMeans(n_clusters=k,init="k-means++")
+    kmeans=kmeans.fit(customer_range)
+    wss_iter=kmeans.inertia_
+    wss.append(wss_iter)
+
+
+# In[104]:
+
+
+centers1=pd.DataFrame({'Clusters1': K, "WSS" :wss})
+centers1
+
+
+# In[105]:
+
+
+sns.lineplot(x='Clusters1',y='WSS',data=centers1,marker="+")
+plt.title("Spending Score and Age")
+
+fig=plt.gcf()
+fig.set_size_inches(15,5)
+#cluster=4
+
+
+# In[116]:
+
+
+#Modal for spending score and Age
+kmeans=cluster.KMeans(n_clusters=4,init="k-means++")
+kmeans=kmeans.fit(customer[["Spending Score","Age"]])
+
+
+# In[117]:
+
+
+kmeans.cluster_centers_
+
+
+# In[118]:
+
+
+customer.head()
+
+
+# In[121]:
+
+
+customer['Clusters1']=kmeans.labels_
+customer.head()
+
+
+# In[123]:
+
+
+customer['Clusters1'].value_counts()
+
+
+# In[125]:
+
+
+sns.pairplot(customer,vars=['Age','Annual Income','Spending Score'], hue="Clusters1",height=4)
+
+
+# In[132]:
+
+
+x=customer.iloc[:,[2,4]].values
+x.shape
+
+
+# In[133]:
+
+
+from sklearn.cluster import KMeans
+
+wss=[]
+for i in range(1,11):
+    kmeans= KMeans(n_clusters=i,init='k-means++',max_iter=300, n_init=10, random_state=0)
+    kmeans.fit(x)
+    wss.append(kmeans.inertia_)
+
+
+# In[136]:
+
+
+kmeans= KMeans(n_clusters=i,init='k-means++',max_iter=300, n_init=10, random_state=0)
+ymeans=kmeans.fit_predict(x)
+
+plt.rcParams['figure.figsize']=(10,10)
+plt.title('Cluster of Ages',fontsize=20)
+
+plt.scatter(x[ymeans == 0,0], x[ymeans== 0,1],s=100, c="yellow", label= 'Priority Customers')    
+plt.scatter(x[ymeans == 1,0], x[ymeans== 1,1],s=100, c="green",  label= 'Target Customers(High Income)')    
+plt.scatter(x[ymeans == 2,0], x[ymeans== 2,1],s=100, c="blue",   label= 'Usual Customers')    
+plt.scatter(x[ymeans == 3,0], x[ymeans== 3,1],s=100, c="orange", label= 'Target Customers(Low Income)')    
+plt.scatter(x[ymeans == 4,0], x[ymeans== 4,1],s=100, c="red"  ,  label= 'Moderate Targeted Customers')
+plt.scatter(kmeans.cluster_centers_[:,0],kmeans.cluster_centers_[:,1], s=50, c='black') 
+
+plt.style.use('fivethirtyeight')
+plt.xlabel("Age")
+plt.ylabel("Spending Score(1-100)")
+plt.legend()
+plt.grid()
+plt.show()
+
+
+# In[146]:
+
+
+customer_long= customer[['Annual Income','Age']]
+
+
+# In[148]:
+
+
+
+customer['Clusters2']=kmeans.labels_
+customer_long.describe()
+
+
+# In[149]:
+
+
+K=range(1,12)
+wss=[]
+for k in K:
+    kmeans=cluster.KMeans(n_clusters=k,init="k-means++")
+    kmeans=kmeans.fit(customer_long)
+    wss_iter=kmeans.inertia_
+    wss.append(wss_iter)
+
+
+# In[150]:
+
+
+centers2=pd.DataFrame({'Clusters2': K, "WSS" :wss})
+centers2
+
+
+# In[151]:
+
+
+sns.lineplot(x='Clusters2',y='WSS',data=centers2,marker="+")
+plt.title("Annual Income and Age")
+
+fig=plt.gcf()
+fig.set_size_inches(15,5)
+#cluster=4
+
+
+# In[152]:
+
+
+#Modal for spending score and Age
+kmeans=cluster.KMeans(n_clusters=4,init="k-means++")
+kmeans=kmeans.fit(customer[["Annual Income","Age"]])
+
+
+# In[153]:
+
+
+kmeans.cluster_centers_
+
+
+# In[154]:
+
+
+customer.head()
+
+
+# In[156]:
+
+
+customer['Clusters2']=kmeans.labels_
+customer.head()
+
+
+# In[158]:
+
+
+customer['Clusters2'].value_counts()
+
+
+# In[159]:
+
+
+sns.pairplot(customer,vars=['Age','Annual Income','Spending Score'], hue="Clusters2",height=4)
+
+
+# In[165]:
+
+
+import scipy.cluster.hierarchy as sch
+from sklearn.cluster import AgglomerativeClustering
+
+get_ipython().run_line_magic('matplotlib', 'inline')
+df=pd.read_csv('./Desktop/customer data.csv')
+df.head(10)
+df.describe()
+
+X= df.iloc[:,[3,4]].values
+plt.figure(figsize=(15,6))
+plt.title("Dendrogram")
+plt.xlabel("Customers")
+plt.ylabel("Euclidean distance")
+
+dendrogram=sch.dendrogram(sch.linkage(X,method='ward'))
+plt.show()
+
+
+# In[167]:
+
+
+plt.figure(figsize=(15,6))
+plt.title("Dendrogram")
+plt.xlabel("Customers")
+plt.ylabel("Euclidean distance")
+plt.hlines(y=100,xmin=0,xmax=2000,lw=3,linestyle='--')
+plt.text(x=900,y=220, s="Historical line crossing S vertical lines",fontsize=20)
+
+dendrogram=sch.dendrogram(sch.linkage(X,method='ward'))
+plt.show()
+
+
+# In[171]:
+
+
+hc=AgglomerativeClustering(n_clusters=5,affinity='euclidean',linkage='ward')
+
+y_hc=hc.fit_predict(X)
+
+plt.figure(figsize=(15,10))
+
+plt.scatter(X[y_hc == 0,0], X[y_hc== 0,1],s=100, c="yellow", label= 'Careful Cluster1')    
+plt.scatter(X[y_hc == 1,0], X[y_hc== 1,1],s=100, c="green",  label= 'Standard Cluster2')    
+plt.scatter(X[y_hc == 2,0], X[y_hc== 2,1],s=100, c="blue",   label= 'Target Group Cluster3')    
+plt.scatter(X[y_hc == 3,0], X[y_hc== 3,1],s=100, c="orange", label= 'Careless Cluster4')    
+plt.scatter(X[y_hc == 4,0], X[y_hc== 4,1],s=100, c="red"  ,  label= 'Sensible Cluster5')
+
+plt.title("Clustering of Customers",fontsize=20)
+plt.xlabel("Annual Income",fontsize=20)
+plt.ylabel("Spending Score(1-100)",fontsize=20)
+plt.legend(fontsize=15)
+plt.grid(True)
+plt.axhspan(ymin=60,ymax=100,xmin=0.4,xmax=0.96,alpha=0.3,color='magenta')
+plt.show()
+
+
+# In[ ]:
+
+
+
+
