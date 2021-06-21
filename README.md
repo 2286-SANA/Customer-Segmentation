@@ -1,2 +1,4 @@
-# Mini-Project-4sem-
-Customer Segmentation
+#Customer Segmentation
+Mini-Project
+Machine Learning
+
