@@ -1,4 +1,4 @@
-#Customer Segmentation
-Mini-Project
-Machine Learning
+Customer Segmentation
+#Mini-Project
+#Machine Learning
 
