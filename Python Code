@@ -1,4 +1,4 @@
-# In[41]:
+# In[1]:
 
 
 import pandas as pd # working with data
@@ -11,21 +11,21 @@ sns.set_style()
 plt.style.use('fivethirtyeight')
 
 
-# In[42]:
+# In[2]:
 
 
 customer=pd.read_csv('./Desktop/customer data.csv')
 customer.head()
 
 
-# In[43]:
+# In[3]:
 
 
 customer.rename(columns={"Income":"Annual Income", "Spending Score(1-100)" : "Spending Score" },inplace=True)
 customer.head()
 
 
-# In[44]:
+# In[4]:
 
 
 # Plot Age,Income,and Spending Score Correlation
@@ -34,7 +34,7 @@ fig=plt.gcf()
 fig.set_size_inches(15,10)
 
 
-# In[45]:
+# In[5]:
 
 
 labels=['Female','Male']
@@ -50,7 +50,7 @@ plt.legend()
 plt.show()
 
 
-# In[46]:
+# In[6]:
 
 
 sns.pairplot(customer,vars=['Age','Annual Income','Spending Score'], hue="Gender")
@@ -59,28 +59,28 @@ fig=plt.gcf()
 fig.set_size_inches(15,10)
 
 
-# In[68]:
+# In[8]:
 
 
 plt.figure(figsize=(15,10))
 ax=sns.countplot(x="Age", hue="Gender",data=customer)
 
 
-# In[69]:
+# In[9]:
 
 
 plt.figure(figsize=(15,10))
 ax=sns.countplot(x="Annual Income", hue="Gender",data=customer)
 
 
-# In[70]:
+# In[10]:
 
 
 plt.figure(figsize=(15,20))
 ax=sns.countplot(x="Spending Score", hue="Gender",data=customer)
 
 
-# In[71]:
+# In[11]:
 
 
 #Spending Score Vs Income
@@ -88,19 +88,19 @@ ax=sns.countplot(x="Spending Score", hue="Gender",data=customer)
 customer_short=customer[['Spending Score','Annual Income']]
 
 
-# In[72]:
+# In[12]:
 
 
 customer_short.describe()
 
 
-# In[53]:
+# In[13]:
 
 
 import sklearn.cluster as cluster
 
 
-# In[73]:
+# In[23]:
 
 
 K=range(1,12)
@@ -112,14 +112,14 @@ for k in K:
     wss.append(wss_iter)
 
 
-# In[74]:
+# In[24]:
 
 
 centers=pd.DataFrame({'Clusters':K,'WSS':wss})
 centers
 
 
-# In[75]:
+# In[25]:
 
 
 sns.lineplot(x='Clusters',y='WSS',data=centers,marker="+")
@@ -129,7 +129,7 @@ fig=plt.gcf()
 fig.set_size_inches(15,5)
 
 
-# In[76]:
+# In[26]:
 
 
 #Modal for spending score and income
@@ -137,7 +137,7 @@ kmeans=cluster.KMeans(n_clusters=5,init="k-means++")
 kmeans=kmeans.fit(customer[["Spending Score","Annual Income"]])
 
 
-# In[77]:
+# In[27]:
 
 
 kmeans.cluster_centers_
